@@ -1,4 +1,4 @@
-# vue_week6
+# vue_week7
 
 ## Project setup
 ```
