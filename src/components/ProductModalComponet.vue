@@ -18,6 +18,24 @@ aria-hidden="true">
                 <input type="text" class="form-control" placeholder="請輸入圖片連結" v-model="localProduct.imageUrl">
                 <img class="img-fluid" :src="localProduct.imageUrl">
               </div>
+
+              <div class="mb-3">
+                <label for="customFile" class="form-label"
+                  >或 上傳圖片
+                  <i
+                    class="fas fa-spinner fa-spin"
+                    v-if="status.fileUploading"
+                  ></i>
+                </label>
+                <input
+                  type="file"
+                  id="customFile"
+                  class="form-control"
+                  ref="fileInput"
+                  @change="uploadFile"
+                />
+              </div>
+
               <h3 class="mb-3">多圖新增</h3>
               <!-- 判斷是不是一個陣列 ，並且有沒有值-->
               <div v-if="Array.isArray(localProduct.imagesUrl)">
@@ -128,12 +146,15 @@ aria-hidden="true">
 </template>
 <script>
 import Modal from 'bootstrap/js/dist/modal'
+import BootsrtapModal from '@/mixins/BootsrtapModal'
 export default {
   props: ['tempProduct', 'isNew', 'currentPage'],
+  mixins: [BootsrtapModal],
   data () {
     return {
       localProduct: this.tempProduct,
-      modal: ''
+      modal: '',
+      status: {}
     }
   },
   watch: {
@@ -151,7 +172,7 @@ export default {
       }
       this.$http[method](url, { data: this.tempProduct })
         .then(res => {
-          // this.getData()
+          // this.getProducts()
           this.$emit('get-products', method === 'put' ? this.currentPage : 1)
           this.closeModal()
           alert(res.data.message)
@@ -165,12 +186,45 @@ export default {
     },
     createImagesUrl () {
       this.$emit('create-imagesurl')
+    },
+    uploadFile () {
+      const uploadedFile = this.$refs.fileInput.files[0]
+      const formData = new FormData()
+      formData.append('file-to-upload', uploadedFile)
+      const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/upload`
+      this.status.fileUploading = true
+      this.$http.post(url, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then((response) => {
+        this.status.fileUploading = false
+        if (response.data.success) {
+          this.localProduct.imageUrl = response.data.imageUrl
+          this.$refs.fileInput.value = ''
+          console.log(response)
+          alert(response.data.message)
+          // this.emitter.emit('push-message', {
+          //   style: 'success',
+          //   title: '圖片上傳結果',
+          //   content: response.data.message
+          // })
+        } else {
+          this.$refs.fileInput.value = ''
+          alert(response.data.message)
+          // this.emitter.emit('push-message', {
+          //   style: 'danger',
+          //   title: '圖片上傳結果',
+          //   content: response.data.message
+          // })
+        }
+      }).catch((err) => {
+        console.dir(err)
+      })
     }
   },
   mounted () {
     this.modal = new Modal(this.$refs.modal)
-    console.log(this.$refs.modal)
-    console.log(this.modal)
   }
 }
 </script>

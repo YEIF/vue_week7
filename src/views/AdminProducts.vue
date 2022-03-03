@@ -56,21 +56,24 @@
       <!-- 內 get-product, 外 getProduct -->
       <PaginationComponet :pages="pagination" @change-pages="getProducts"></PaginationComponet>
         <ProductModalComponent ref="productModal" :temp-product="tempProduct" :is-new="isNew" :current-page="pagination.current_page"
-          @get-products="getProducts" @close-modal="closeModal" @create-imagesurl="createImagesUrl">
+          @get-products="getProducts"  @create-imagesurl="createImagesUrl">
         </ProductModalComponent>
-
+      <DelProductModalComponent :temp-product="tempProduct" :is-new="isNew" :current-page="pagination.current_page"
+        @get-products="getProducts" ref="delproductModal">
+      </DelProductModalComponent>
     </div>
 </template>
 
 <script>
-import Modal from 'bootstrap/js/dist/modal'
-import PaginationComponet from '@/components/PaginationComponet.vue'
-import ProductModalComponent from '@/components/ProductModalComponet.vue'
-let productModal = null
-const delproductModal = null
+// import Modal from 'bootstrap/js/dist/modal'
+import PaginationComponet from '@/components/PaginationComponet'
+import ProductModalComponent from '@/components/ProductModalComponet'
+import DelProductModalComponent from '@/components/DelProductModalComponent'
+// let productModal = null
+// const delproductModal = null
 export default {
   components: {
-    PaginationComponet, ProductModalComponent
+    PaginationComponet, ProductModalComponent, DelProductModalComponent
     // pagination, productModalcomponent, delproductModalcomponent
   },
   data () {
@@ -88,24 +91,27 @@ export default {
       if (type === 'new') {
         this.isNew = true
         this.modal = 'product'
-        productModal.show()
+        this.$refs.productModal.openModal()
+        // productModal.show()
         this.tempProduct = {
           imagesUrl: []
         }
       } else if (type === 'del') {
         this.isNew = false
         this.modal = 'del'
-        delproductModal.show()
+        // delproductModal.show()
+        this.$refs.delproductModal.openModal()
         this.tempProduct = JSON.parse(JSON.stringify(product))
       } else if (type === 'edit') {
         this.isNew = false
         this.modal = 'product'
         this.tempProduct = JSON.parse(JSON.stringify(product))
-        productModal.show()
+        this.$refs.productModal.openModal()
+        // productModal.show()
       }
     },
     closeModal () {
-      if (this.modal === 'product') { productModal.hide() } else if (this.modal === 'del') { delproductModal.hide() }
+      if (this.modal === 'product') { this.$refs.productModal.hideModal() } else if (this.modal === 'del') { this.$refs.delproductModal.hideModal().hide() }
     },
     checkLogin () {
       const url = `${process.env.VUE_APP_API}/api/user/check`
@@ -153,11 +159,12 @@ export default {
   },
   mounted () {
     // 取出 Token
-    productModal = new Modal(document.querySelector('#productModal'), { keyboard: false })
+    // productModal = new Modal(document.querySelector('#productModal'), { keyboard: false })
     // delproductModal = new Modal(document.querySelector('#delProductModal'), { keyboard: false })
     const token = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, '$1')
     this.$http.defaults.headers.common.Authorization = token
     this.checkLogin()
+    console.log(this.$refs)
   }
 }
 </script>
