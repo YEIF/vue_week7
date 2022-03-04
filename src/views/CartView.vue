@@ -1,5 +1,5 @@
 <template>
-  <h2>購物車</h2>
+  <!-- <h2>購物車</h2> -->
   <div class="text-end">
     <button class="btn btn-outline-danger" type="button" @click="delAllCarts"
       :disabled="carts.carts?.length ===0">清空購物車</button>

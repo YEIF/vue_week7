@@ -1,0 +1,141 @@
+<template>
+  <div class="container">
+    <table class="table mt-4">
+      <thead>
+        <tr>
+          <th>購買時間</th>
+          <th>Email</th>
+          <th>購買款項</th>
+          <th>應付金額</th>
+          <th>是否付款</th>
+          <th>編輯</th>
+        </tr>
+      </thead>
+      <tbody>
+        <template v-for="(order, key) in orders" :key="order.id+key">
+          <tr v-if="orders.length" :class="{ 'text-secondary': !order.is_paid }">
+            <td>{{ orderdate(order.create_at) }}</td>
+            <td><span v-text="order.user.email" v-if="order.user"></span></td>
+            <td>
+              <ul class="list-unstyled">
+                <li v-for="(product, i) in order.products" :key="i">
+                  {{ product.product.title }} 數量：{{ product.qty }}
+                  {{ product.product.unit }}
+                </li>
+              </ul>
+            </td>
+            <td class="text-right">{{ order.total }}</td>
+            <td>
+              <div class="form-check form-switch">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  :id="`paidSwitch${order.id}`"
+                  v-model="order.is_paid"
+                  @change="updatePaid(order)"
+                />
+                <label class="form-check-label" :for="`paidSwitch${order.id}`">
+                  <span v-if="order.is_paid">已付款</span>
+                  <span v-else>未付款</span>
+                </label>
+              </div>
+            </td>
+            <td>
+              <div class="btn-group">
+                <button
+                  class="btn btn-outline-primary btn-sm"
+                  type="button"
+                  @click="openModal('view',order)"
+                >
+                  檢視
+                </button>
+                <button
+                  class="btn btn-outline-danger btn-sm"
+                  type="button"
+                  @click="openModal('del',order)"
+                >
+                  刪除
+                </button>
+              </div>
+            </td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+    <PaginationComponet :pages="pagination" @change-pages="getOrders"></PaginationComponet>
+    <OrderModalComponent ref="orderModal" :temp-order="tempOrder" :current-page="pagination.current_page"
+    @update-paid="updatePaid">
+    </OrderModalComponent>
+    <DelOrderModalComponent ref="delorderModal" :temp-order="tempOrder" :current-page="pagination.current_page"
+    @get-orders="getOrders">
+
+    </DelOrderModalComponent>
+  </div>
+</template>
+<script>
+import { orderdate } from '@/libs/date'
+import DelOrderModalComponent from '@/components/DelOrderModalComponent.vue'
+import PaginationComponet from '@/components/PaginationComponet.vue'
+import OrderModalComponent from '@/components/OrderModalComponent.vue'
+export default {
+  components: {
+    PaginationComponet, OrderModalComponent, DelOrderModalComponent
+  },
+  data () {
+    return {
+      tempOrder: {},
+      isNew: false,
+      orders: [],
+      pagination: {}
+    }
+  },
+  methods: {
+    getOrders (page = 1) {
+      const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/orders?page=${page}`
+      this.isLoading = true
+      this.$http.get(url, this.tempProduct)
+        .then((res) => {
+          console.log(res)
+          this.orders = res.data.orders
+          this.pagination = res.data.pagination
+        }).catch((err) => {
+          console.dir(err)
+        })
+    },
+    orderdate,
+    openModal (type, order) {
+      if (type === 'view') {
+        this.tempOrder = JSON.parse(JSON.stringify(order))
+        console.log(this.tempOrder)
+        this.$refs.orderModal.openModal()
+      } else if (type === 'del') {
+        this.tempOrder = JSON.parse(JSON.stringify(order))
+        console.log(this.tempOrder)
+        this.$refs.delorderModal.openModal()
+      }
+    },
+    updatePaid (order) {
+      // this.isLoading = true;
+      const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/order/${order.id}`
+      const paid = {
+        is_paid: order.is_paid
+      }
+      this.$http.put(api, { data: paid }).then((res) => {
+        // this.isLoading = false
+        const orderComponent = this.$refs.orderModal
+        orderComponent.hideModal()
+        this.getOrders(this.currentPage)
+        alert('更新付款狀態')
+        // this.$httpMessageState(ress, '更新付款狀態')
+      }).catch((err) => {
+        console.dir(err)
+        // this.isLoading = false
+        // this.$httpMessageState(error.ress, '錯誤訊息')
+      })
+    }
+  },
+  mounted () {
+    this.getOrders()
+  }
+}
+</script>
