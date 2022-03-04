@@ -27,14 +27,13 @@
 </template>
 
 <script>
-import Modal from 'bootstrap/js/dist/modal'
-import BootsrtapModal from '@/mixins/BootsrtapModal'
+import BootsrtapModal from '@/libs/mixins/BootsrtapModal'
 export default {
-  props: ['tempProduct', 'isNew', 'currentPage'],
+  props: ['tempProduct', 'currentPage'],
   mixins: [BootsrtapModal],
   data () {
     return {
-      modal: ''
+
     }
   },
   methods: {
@@ -55,7 +54,7 @@ export default {
     }
   },
   mounted () {
-    this.modal = new Modal(this.$refs.modal)
+    // this.modal = new Modal(this.$refs.modal)
   }
 }
 </script>

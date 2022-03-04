@@ -55,9 +55,9 @@
       <!-- 內 pages,外 pagination -->
       <!-- 內 get-product, 外 getProduct -->
       <PaginationComponet :pages="pagination" @change-pages="getProducts"></PaginationComponet>
-        <ProductModalComponent ref="productModal" :temp-product="tempProduct" :is-new="isNew" :current-page="pagination.current_page"
-          @get-products="getProducts"  @create-imagesurl="createImagesUrl">
-        </ProductModalComponent>
+      <ProductModalComponent ref="productModal" :temp-product="tempProduct" :is-new="isNew" :current-page="pagination.current_page"
+        @get-products="getProducts"  @create-imagesurl="createImagesUrl">
+      </ProductModalComponent>
       <DelProductModalComponent :temp-product="tempProduct" :is-new="isNew" :current-page="pagination.current_page"
         @get-products="getProducts" ref="delproductModal">
       </DelProductModalComponent>
@@ -65,16 +65,12 @@
 </template>
 
 <script>
-// import Modal from 'bootstrap/js/dist/modal'
 import PaginationComponet from '@/components/PaginationComponet'
 import ProductModalComponent from '@/components/ProductModalComponet'
 import DelProductModalComponent from '@/components/DelProductModalComponent'
-// let productModal = null
-// const delproductModal = null
 export default {
   components: {
     PaginationComponet, ProductModalComponent, DelProductModalComponent
-    // pagination, productModalcomponent, delproductModalcomponent
   },
   data () {
     return {
@@ -109,26 +105,23 @@ export default {
         this.$refs.productModal.openModal()
         // productModal.show()
       }
-    },
-    closeModal () {
-      if (this.modal === 'product') { this.$refs.productModal.hideModal() } else if (this.modal === 'del') { this.$refs.delproductModal.hideModal().hide() }
-    },
-    checkLogin () {
-      const url = `${process.env.VUE_APP_API}/api/user/check`
-      this.$http.post(url)
-        .then((res) => {
-          if (!res.data.success) {
-            alert('請重新登入')
-            window.location = 'index.html'
-          } else {
-            this.getProducts()
-          }
-        })
-        .catch((err) => {
-          console.dir(err.data)
-          alert('驗證失敗，請重新登入')
-          window.location = 'index.html'
-        })
+    // },
+    // checkLogin () {
+    //   const url = `${process.env.VUE_APP_API}/api/user/check`
+    //   this.$http.post(url)
+    //     .then((res) => {
+    //       if (!res.data.success) {
+    //         alert('請重新登入')
+    //         window.location = 'index.html'
+    //       } else {
+    //         this.getProducts()
+    //       }
+    //     })
+    //     .catch((err) => {
+    //       console.dir(err.data)
+    //       alert('驗證失敗，請重新登入')
+    //       window.location = 'index.html'
+    //     })
     },
     getProducts (page = 1) {
       const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/products/?page=${page}`
@@ -158,13 +151,11 @@ export default {
     }
   },
   mounted () {
+    this.getProducts()
     // 取出 Token
-    // productModal = new Modal(document.querySelector('#productModal'), { keyboard: false })
-    // delproductModal = new Modal(document.querySelector('#delProductModal'), { keyboard: false })
-    const token = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, '$1')
-    this.$http.defaults.headers.common.Authorization = token
-    this.checkLogin()
-    console.log(this.$refs)
+    // const token = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, '$1')
+    // this.$http.defaults.headers.common.Authorization = token
+    // this.checkLogin()
   }
 }
 </script>
