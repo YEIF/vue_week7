@@ -1,5 +1,5 @@
 <template>
-  <h1 class="text-danger">現在是前台</h1>
+  <!-- <h1 class="text-danger">現在是前台</h1> -->
   <div class="container">
     <FrontNavbar></FrontNavbar>
     <router-view></router-view>

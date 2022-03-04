@@ -1,5 +1,5 @@
 <template>
-  <h2>產品列表</h2>
+  <!-- <h2>產品列表</h2> -->
   <div class="container">
       <div class="mt-4">
         <table class="table align-middle">
@@ -27,12 +27,13 @@
             </td>
             <td>
               <div class="btn-group btn-group-sm">
-                <router-link :to="`/product/${product.id}`" class="btn btn-primary">
+                <router-link :to="`/user/product/${product.id}`" class="btn btn-primary">
                   <!-- <i class="fas fa-spinner fa-pulse" ></i> -->
                   查看更多
                 </router-link>
-                <button type="button" class="btn btn-outline-danger" @click="addToCart(product.id)">
-                  <i class="fas fa-spinner fa-pulse" v-if="isLoadingItem===product.id" ></i>
+                <button type="button" class="btn btn-outline-danger" @click="addToCart(product.id)"
+                :disabled="isLoadingItem===product.id">
+                  <i class="fas fa-spinner fa-pulse" v-if="isLoadingItem===product.id"></i>
                   加到購物車
                 </button>
               </div>

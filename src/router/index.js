@@ -3,15 +3,16 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 
 const routes = [
   {
-    path: '/',
+    path: '/login',
+    name: 'Login',
     component: () => import('../views/LoginView.vue')
   },
   {
-    path: '/user',
+    path: '/',
     component: () => import('../views/FrontView.vue'),
     children: [
       {
-        path: '/',
+        path: '',
         // component: HomeView
         component: () => import('../views/HomeView.vue')
       },
@@ -34,12 +35,20 @@ const routes = [
     component: () => import('../views/DashboradView.vue'),
     children: [
       {
+        path: '',
+        // component: HomeView
+        component: () => import('../views/AdminView.vue')
+      },
+      {
         path: 'products',
         component: () => import('../views/AdminProducts.vue')
       },
       {
         path: 'coupon',
         component: () => import('../views/AdminCoupon.vue')
+      }, {
+        path: 'orders',
+        component: () => import('../views/OrderView.vue')
       }
     ]
   },
@@ -48,6 +57,11 @@ const routes = [
     path: '/:pathMatch(.*)*',
     component: () => import('../views/NotFound.vue')
   }
+  // {
+  //   path: '/admin/:pathMatch(.*)*',
+  //   redirect: { name: 'Login' }
+  // }
+
   // 重新導向
   // {
   //   path: '/:pathMatch(.*)*',

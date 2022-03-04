@@ -48,7 +48,6 @@ export default {
   },
   methods: {
     login () {
-      // const api = 'https://vue3-course-api.hexschool.io/v2/admin/signin'
       const url = `${process.env.VUE_APP_API}/admin/signin`
       this.$http.post(url, this.user).then((response) => {
         const { token, expired } = response.data
