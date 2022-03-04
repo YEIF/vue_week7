@@ -145,14 +145,13 @@ aria-hidden="true">
 </div>
 </template>
 <script>
-import Modal from 'bootstrap/js/dist/modal'
-import BootsrtapModal from '@/mixins/BootsrtapModal'
+import BootsrtapModal from '@/libs/mixins/BootsrtapModal'
 export default {
   props: ['tempProduct', 'isNew', 'currentPage'],
   mixins: [BootsrtapModal],
   data () {
     return {
-      localProduct: this.tempProduct,
+      localProduct: {},
       modal: '',
       status: {}
     }
@@ -182,7 +181,6 @@ export default {
     },
     closeModal () {
       this.modal.hide()
-      // this.$emit('close-modal')
     },
     createImagesUrl () {
       this.$emit('create-imagesurl')
@@ -222,9 +220,6 @@ export default {
         console.dir(err)
       })
     }
-  },
-  mounted () {
-    this.modal = new Modal(this.$refs.modal)
   }
 }
 </script>
