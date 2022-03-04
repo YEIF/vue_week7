@@ -1,3 +1,79 @@
 <template>
-  <h2>後台折價卷</h2>
+  <div class="container">
+    <!-- <Loading :active="isLoading" :z-index="1060"></Loading> -->
+    <div class="text-end mt-4">
+      <button class="btn btn-primary" type="button" @click="openCouponModal(true)">
+        建立新的優惠券
+      </button>
+    </div>
+    <table class="table mt-4">
+      <thead>
+      <tr>
+        <th>名稱</th>
+        <th>折扣百分比</th>
+        <th>到期日</th>
+        <th>是否啟用</th>
+        <th>編輯</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr v-for="(item, key) in coupons" :key="key">
+        <td>{{ item.title }}</td>
+        <td>{{ item.percent }}%</td>
+        <td>{{ DateFn(item.due_date) }}</td>
+        <td>
+          <span v-if="item.is_enabled === 1" class="text-success">啟用</span>
+          <span v-else class="text-muted">未啟用</span>
+        </td>
+        <td>
+          <div class="btn-group">
+            <button class="btn btn-outline-primary btn-sm"
+                    @click="openCouponModal(false, item)"
+            >編輯</button>
+            <button class="btn btn-outline-danger btn-sm"
+                    @click="openDelCouponModal(item)"
+            >刪除</button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
+<script>
+import { DateFn } from '@/libs/date'
+export default {
+  data () {
+    return {
+      coupons: {},
+      tempCoupon: {
+        title: '',
+        is_enabled: 0,
+        percent: 100,
+        code: ''
+      },
+      isLoading: false,
+      isNew: false
+    }
+  },
+  methods: {
+    getCoupons () {
+      // this.isLoading = true
+      const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/coupons`
+      this.$http.get(url, this.tempProduct)
+        .then(res => {
+          this.coupons = res.data.coupons
+          this.isLoading = false
+        }).catch((err) => {
+          console.dir(err)
+          // this.isLoading = false
+          // this.$httpMessageState(error.response, '錯誤訊息')
+        })
+    },
+    DateFn
+  },
+  mounted () {
+    this.getCoupons()
+  }
+}
+</script>

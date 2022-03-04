@@ -56,13 +56,13 @@
                   </tr>
                   <tr>
                     <th>下單時間</th>
-                    <td>{{ orderdate(localOrder.create_at) }}</td>
+                    <td>{{ DateFn(localOrder.create_at) }}</td>
                   </tr>
                   <tr>
                     <th>付款時間</th>
                     <td>
                       <span v-if="localOrder.paid_date">
-                        {{ orderdate(localOrder.paid_date) }}
+                        {{ DateFn(localOrder.paid_date) }}
                       </span>
                       <span v-else>時間不正確</span>
                     </td>
@@ -143,7 +143,7 @@
 </template>
 
 <script>
-import { orderdate } from '@/libs/date'
+import { DateFn } from '@/libs/date'
 import BootsrtapModal from '@/libs/mixins/BootsrtapModal'
 export default {
   props: ['tempOrder', 'currentPage'],
@@ -162,7 +162,7 @@ export default {
     closeModal () {
       this.modal.hide()
     },
-    orderdate
+    DateFn
   }
 }
 </script>

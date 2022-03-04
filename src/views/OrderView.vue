@@ -14,7 +14,7 @@
       <tbody>
         <template v-for="(order, key) in orders" :key="order.id+key">
           <tr v-if="orders.length" :class="{ 'text-secondary': !order.is_paid }">
-            <td>{{ orderdate(order.create_at) }}</td>
+            <td>{{ DateFn(order.create_at) }}</td>
             <td><span v-text="order.user.email" v-if="order.user"></span></td>
             <td>
               <ul class="list-unstyled">
@@ -73,7 +73,7 @@
   </div>
 </template>
 <script>
-import { orderdate } from '@/libs/date'
+import { DateFn } from '@/libs/date'
 import DelOrderModalComponent from '@/components/DelOrderModalComponent.vue'
 import PaginationComponet from '@/components/PaginationComponet.vue'
 import OrderModalComponent from '@/components/OrderModalComponent.vue'
@@ -102,7 +102,7 @@ export default {
           console.dir(err)
         })
     },
-    orderdate,
+    DateFn,
     openModal (type, order) {
       if (type === 'view') {
         this.tempOrder = JSON.parse(JSON.stringify(order))
