@@ -52,9 +52,6 @@ export default {
     closeModal () {
       this.modal.hide()
     }
-  },
-  mounted () {
-    // this.modal = new Modal(this.$refs.modal)
   }
 }
 </script>

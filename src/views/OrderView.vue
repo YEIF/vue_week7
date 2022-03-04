@@ -84,7 +84,6 @@ export default {
   data () {
     return {
       tempOrder: {},
-      isNew: false,
       orders: [],
       pagination: {}
     }
@@ -106,11 +105,9 @@ export default {
     openModal (type, order) {
       if (type === 'view') {
         this.tempOrder = JSON.parse(JSON.stringify(order))
-        console.log(this.tempOrder)
         this.$refs.orderModal.openModal()
       } else if (type === 'del') {
         this.tempOrder = JSON.parse(JSON.stringify(order))
-        console.log(this.tempOrder)
         this.$refs.delorderModal.openModal()
       }
     },
