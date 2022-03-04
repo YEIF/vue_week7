@@ -96,8 +96,8 @@ export default {
         this.isNew = false
         this.modal = 'del'
         // delproductModal.show()
-        this.$refs.delproductModal.openModal()
         this.tempProduct = JSON.parse(JSON.stringify(product))
+        this.$refs.delproductModal.openModal()
       } else if (type === 'edit') {
         this.isNew = false
         this.modal = 'product'
@@ -105,23 +105,6 @@ export default {
         this.$refs.productModal.openModal()
         // productModal.show()
       }
-    // },
-    // checkLogin () {
-    //   const url = `${process.env.VUE_APP_API}/api/user/check`
-    //   this.$http.post(url)
-    //     .then((res) => {
-    //       if (!res.data.success) {
-    //         alert('請重新登入')
-    //         window.location = 'index.html'
-    //       } else {
-    //         this.getProducts()
-    //       }
-    //     })
-    //     .catch((err) => {
-    //       console.dir(err.data)
-    //       alert('驗證失敗，請重新登入')
-    //       window.location = 'index.html'
-    //     })
     },
     getProducts (page = 1) {
       const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/products/?page=${page}`
@@ -134,17 +117,6 @@ export default {
           console.dir(err.data)
         })
     },
-    // logout () {
-    //   const url = `${this.apiUrl}/logout`
-    //   this.$http.post(url)
-    //     .then((res) => {
-    //       Cookies.remove('hexToken')
-    //       alert('登出成功')
-    //       window.location = 'index.html'
-    //     }).catch((err) => {
-    //       console.dir(err.data)
-    //     })
-    // },
     createImagesUrl () {
       this.tempProduct.imagesUrl = []
       this.tempProduct.imagesUrl.push('')
@@ -152,10 +124,6 @@ export default {
   },
   mounted () {
     this.getProducts()
-    // 取出 Token
-    // const token = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, '$1')
-    // this.$http.defaults.headers.common.Authorization = token
-    // this.checkLogin()
   }
 }
 </script>

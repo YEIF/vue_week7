@@ -2,7 +2,7 @@
   <div class="container">
     <!-- <Loading :active="isLoading" :z-index="1060"></Loading> -->
     <div class="text-end mt-4">
-      <button class="btn btn-primary" type="button" @click="openCouponModal(true)">
+      <button class="btn btn-primary" type="button" @click="openCouponModal('new')">
         建立新的優惠券
       </button>
     </div>
@@ -28,21 +28,30 @@
         <td>
           <div class="btn-group">
             <button class="btn btn-outline-primary btn-sm"
-                    @click="openCouponModal(false, item)"
+                    @click="openCouponModal('edit', item)"
             >編輯</button>
             <button class="btn btn-outline-danger btn-sm"
-                    @click="openDelCouponModal(item)"
+                    @click="openCouponModal('del',item)"
             >刪除</button>
           </div>
         </td>
       </tr>
       </tbody>
     </table>
+    <CouponModalComponent ref="couponModal" :temp-coupon="tempCoupon" :is-new="isNew"
+    @get-coupons="getCoupons"></CouponModalComponent>
+    <DelCouponModalComponent ref="delcouponModal" :temp-coupon="tempCoupon"
+     @get-coupons="getCoupons"></DelCouponModalComponent>
   </div>
 </template>
 <script>
 import { DateFn } from '@/libs/date'
+import CouponModalComponent from '@/components/CouponModalComponent.vue'
+import DelCouponModalComponent from '@/components/DelCouponModalComponent.vue'
 export default {
+  components: {
+    CouponModalComponent, DelCouponModalComponent
+  },
   data () {
     return {
       coupons: {},
@@ -64,13 +73,32 @@ export default {
         .then(res => {
           this.coupons = res.data.coupons
           this.isLoading = false
+          console.log(res)
         }).catch((err) => {
           console.dir(err)
           // this.isLoading = false
           // this.$httpMessageState(error.response, '錯誤訊息')
         })
     },
-    DateFn
+    DateFn,
+    openCouponModal (type, coupon) {
+      if (type === 'new') {
+        this.isNew = true
+        // this.tempCoupon = {}
+        this.tempCoupon = {
+          due_date: new Date().getTime() / 1000
+        }
+        this.$refs.couponModal.openModal()
+      } else if (type === 'edit') {
+        this.isNew = false
+        this.tempCoupon = JSON.parse(JSON.stringify(coupon))
+        this.$refs.couponModal.openModal()
+      } else if (type === 'del') {
+        this.isNew = false
+        this.tempCoupon = JSON.parse(JSON.stringify(coupon))
+        this.$refs.delcouponModal.openModal()
+      }
+    }
   },
   mounted () {
     this.getCoupons()
