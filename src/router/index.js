@@ -2,11 +2,6 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 
 const routes = [
   {
-    path: '/login',
-    name: 'Login',
-    component: () => import('../views/LoginView.vue')
-  },
-  {
     path: '/',
     component: () => import('../views/FrontView.vue'),
     children: [
@@ -50,16 +45,20 @@ const routes = [
         component: () => import('../views/OrderView.vue')
       }
     ]
+  }, {
+    path: '/login',
+    name: 'Login',
+    component: () => import('../views/LoginView.vue')
   },
   // 404
   {
     path: '/:pathMatch(.*)*',
     component: () => import('../views/NotFound.vue')
+  },
+  {
+    path: '/admin/:pathMatch(.*)*',
+    redirect: { name: 'Login' }
   }
-  // {
-  //   path: '/admin/:pathMatch(.*)*',
-  //   redirect: { name: 'Login' }
-  // }
 
   // 重新導向
   // {

@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+      <VLoading :active="isLoading" :z-index="1060"></VLoading>
       <div class="text-end mt-4">
         <button class="btn btn-primary" @click="openModal('new')">
           建立新的產品
@@ -79,7 +80,8 @@ export default {
       },
       isNew: false,
       products: [],
-      pagination: {}
+      pagination: {},
+      isLoading: false
     }
   },
   methods: {
@@ -108,10 +110,12 @@ export default {
     },
     getProducts (page = 1) {
       const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/products/?page=${page}`
+      this.isLoading = true
       this.$http.get(url)
         .then((res) => {
           this.products = res.data.products
           this.pagination = res.data.pagination
+          this.isLoading = false
         })
         .catch((err) => {
           console.dir(err.data)

@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <!-- <Loading :active="isLoading" :z-index="1060"></Loading> -->
+    <VLoading :active="isLoading" :z-index="1060"></VLoading>
     <div class="text-end mt-4">
       <button class="btn btn-primary" type="button" @click="openCouponModal('new')">
         建立新的優惠券
@@ -40,7 +40,7 @@
     </table>
     <CouponModalComponent ref="couponModal" :temp-coupon="tempCoupon" :is-new="isNew"
     @get-coupons="getCoupons"></CouponModalComponent>
-    <DelCouponModalComponent ref="delcouponModal" :temp-coupon="tempCoupon"
+    <DelCouponModalComponent ref="delCouponModal" :temp-coupon="tempCoupon"
      @get-coupons="getCoupons"></DelCouponModalComponent>
   </div>
 </template>
@@ -67,7 +67,7 @@ export default {
   },
   methods: {
     getCoupons () {
-      // this.isLoading = true
+      this.isLoading = true
       const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/coupons`
       this.$http.get(url, this.tempProduct)
         .then(res => {
@@ -76,7 +76,7 @@ export default {
           console.log(res)
         }).catch((err) => {
           console.dir(err)
-          // this.isLoading = false
+          this.isLoading = false
           // this.$httpMessageState(error.response, '錯誤訊息')
         })
     },
@@ -96,7 +96,7 @@ export default {
       } else if (type === 'del') {
         this.isNew = false
         this.tempCoupon = JSON.parse(JSON.stringify(coupon))
-        this.$refs.delcouponModal.openModal()
+        this.$refs.delCouponModal.openModal()
       }
     }
   },

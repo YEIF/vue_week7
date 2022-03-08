@@ -1,4 +1,5 @@
 <template>
+  <VLoading :active="isLoading" :z-index="1060"></VLoading>
   <div class="container">
     <table class="table mt-4">
       <thead>
@@ -85,7 +86,8 @@ export default {
     return {
       tempOrder: {},
       orders: [],
-      pagination: {}
+      pagination: {},
+      isLoading: false
     }
   },
   methods: {
@@ -94,9 +96,9 @@ export default {
       this.isLoading = true
       this.$http.get(url, this.tempProduct)
         .then((res) => {
-          console.log(res)
           this.orders = res.data.orders
           this.pagination = res.data.pagination
+          this.isLoading = false
         }).catch((err) => {
           console.dir(err)
         })

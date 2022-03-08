@@ -1,5 +1,11 @@
 <template>
   <!-- <h2>單一產品</h2> -->
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mt-3">
+        <li class="breadcrumb-item"><router-link to="/products">產品頁面</router-link></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ product.title }}</li>
+      </ol>
+    </nav>
       <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content border-0">
           <div class="modal-header bg-dark text-white">

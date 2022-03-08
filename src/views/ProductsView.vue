@@ -1,5 +1,6 @@
 <template>
   <!-- <h2>產品列表</h2> -->
+  <VLoading :active="isLoading" :z-index="1060"></VLoading>
   <div class="container">
       <div class="mt-4">
         <table class="table align-middle">
@@ -57,7 +58,9 @@ export default {
       isLoadingItem: false,
       loadingStatus: {
         loadingItem: ''
-      }
+      },
+      // VLoading
+      isLoading: false
     }
   },
   components: {
@@ -66,11 +69,13 @@ export default {
   methods: {
     getProducts (page = 1) {
       // console.log(this.$http)
+      this.isLoading = true
       this.$http.get(
           `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/products/?page=${page}`
       ).then(res => {
         this.products = res.data.products
         this.pagination = res.data.pagination
+        this.isLoading = false
       }).catch(err => {
         console.dir(err)
       })
