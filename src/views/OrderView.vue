@@ -62,11 +62,11 @@
         </template>
       </tbody>
     </table>
-    <PaginationComponet :pages="pagination" @change-pages="getOrders"></PaginationComponet>
+    <PaginationComponent :pages="pagination" @change-pages="getOrders"></PaginationComponent>
     <OrderModalComponent ref="orderModal" :temp-order="tempOrder" :current-page="pagination.current_page"
     @update-paid="updatePaid">
     </OrderModalComponent>
-    <DelOrderModalComponent ref="delorderModal" :temp-order="tempOrder" :current-page="pagination.current_page"
+    <DelOrderModalComponent ref="delOrderModal" :temp-order="tempOrder" :current-page="pagination.current_page"
     @get-orders="getOrders">
 
     </DelOrderModalComponent>
@@ -75,11 +75,11 @@
 <script>
 import { DateFn } from '@/libs/date'
 import DelOrderModalComponent from '@/components/DelOrderModalComponent.vue'
-import PaginationComponet from '@/components/PaginationComponet.vue'
+import PaginationComponent from '@/components/PaginationComponent.vue'
 import OrderModalComponent from '@/components/OrderModalComponent.vue'
 export default {
   components: {
-    PaginationComponet, OrderModalComponent, DelOrderModalComponent
+    PaginationComponent, OrderModalComponent, DelOrderModalComponent
   },
   data () {
     return {
@@ -108,7 +108,7 @@ export default {
         this.$refs.orderModal.openModal()
       } else if (type === 'del') {
         this.tempOrder = JSON.parse(JSON.stringify(order))
-        this.$refs.delorderModal.openModal()
+        this.$refs.delOrderModal.openModal()
       }
     },
     updatePaid (order) {

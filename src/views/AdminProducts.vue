@@ -54,23 +54,23 @@
       <!-- 分頁 -->
       <!-- 內 pages,外 pagination -->
       <!-- 內 get-product, 外 getProduct -->
-      <PaginationComponet :pages="pagination" @change-pages="getProducts"></PaginationComponet>
+      <PaginationComponent :pages="pagination" @change-pages="getProducts"></PaginationComponent>
       <ProductModalComponent ref="productModal" :temp-product="tempProduct" :is-new="isNew" :current-page="pagination.current_page"
-        @get-products="getProducts"  @create-imagesurl="createImagesUrl">
+        @get-products="getProducts"  @create-images-url="createImagesUrl">
       </ProductModalComponent>
       <DelProductModalComponent :temp-product="tempProduct" :is-new="isNew" :current-page="pagination.current_page"
-        @get-products="getProducts" ref="delproductModal">
+        @get-products="getProducts" ref="delProductModal">
       </DelProductModalComponent>
     </div>
 </template>
 
 <script>
-import PaginationComponet from '@/components/PaginationComponet'
-import ProductModalComponent from '@/components/ProductModalComponet'
+import PaginationComponent from '@/components/PaginationComponent'
+import ProductModalComponent from '@/components/ProductModalComponent.vue'
 import DelProductModalComponent from '@/components/DelProductModalComponent'
 export default {
   components: {
-    PaginationComponet, ProductModalComponent, DelProductModalComponent
+    PaginationComponent, ProductModalComponent, DelProductModalComponent
   },
   data () {
     return {
@@ -95,9 +95,9 @@ export default {
       } else if (type === 'del') {
         this.isNew = false
         this.modal = 'del'
-        // delproductModal.show()
+        // delProductModal.show()
         this.tempProduct = JSON.parse(JSON.stringify(product))
-        this.$refs.delproductModal.openModal()
+        this.$refs.delProductModal.openModal()
       } else if (type === 'edit') {
         this.isNew = false
         this.modal = 'product'

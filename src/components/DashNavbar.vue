@@ -50,7 +50,8 @@ export default {
             this.$router.push('/')
           }
         }).catch((error) => {
-          this.$httpMessageState(error.response, '錯誤訊息')
+          alert(error.response)
+          // this.$httpMessageState(error.response, '錯誤訊息')
         })
     }
   }

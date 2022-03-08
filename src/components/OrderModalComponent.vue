@@ -144,10 +144,10 @@
 
 <script>
 import { DateFn } from '@/libs/date'
-import BootsrtapModal from '@/libs/mixins/BootsrtapModal'
+import BootstrapModal from '@/libs/mixins/BootstrapModal'
 export default {
   props: ['tempOrder', 'currentPage'],
-  mixins: [BootsrtapModal],
+  mixins: [BootstrapModal],
   data () {
     return {
       localOrder: {}

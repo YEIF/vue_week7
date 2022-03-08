@@ -145,10 +145,10 @@ aria-hidden="true">
 </div>
 </template>
 <script>
-import BootsrtapModal from '@/libs/mixins/BootsrtapModal'
+import BootstrapModal from '@/libs/mixins/BootstrapModal'
 export default {
   props: ['tempProduct', 'isNew', 'currentPage'],
-  mixins: [BootsrtapModal],
+  mixins: [BootstrapModal],
   data () {
     return {
       localProduct: {},
@@ -183,7 +183,7 @@ export default {
       this.modal.hide()
     },
     createImagesUrl () {
-      this.$emit('create-imagesurl')
+      this.$emit('create-images-url')
     },
     uploadFile () {
       const uploadedFile = this.$refs.fileInput.files[0]

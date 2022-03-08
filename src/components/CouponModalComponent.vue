@@ -58,9 +58,9 @@
 </template>
 
 <script>
-import BootsrtapModal from '@/libs/mixins/BootsrtapModal'
+import BootstrapModal from '@/libs/mixins/BootstrapModal'
 export default {
-  mixins: [BootsrtapModal],
+  mixins: [BootstrapModal],
   props: ['tempCoupon', 'isNew'],
   data () {
     return {
@@ -83,16 +83,16 @@ export default {
     updateCoupon (localCoupon) {
       // this.isLoading = true
       let url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/coupon`
-      let httpMethos = 'post'
+      let methods = 'post'
       let data = localCoupon
 
       if (!this.isNew) {
         url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/coupon/${this.localCoupon.id}`
-        httpMethos = 'put'
+        methods = 'put'
         data = this.localCoupon
       }
 
-      this.$http[httpMethos](url, { data }).then((response) => {
+      this.$http[methods](url, { data }).then((response) => {
         alert('更改優惠卷')
         this.$emit('get-coupons')
         this.closeModal()

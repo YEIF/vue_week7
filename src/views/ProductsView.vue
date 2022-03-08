@@ -27,7 +27,7 @@
             </td>
             <td>
               <div class="btn-group btn-group-sm">
-                <router-link :to="`/user/product/${product.id}`" class="btn btn-primary">
+                <router-link :to="`/product/${product.id}`" class="btn btn-primary">
                   <!-- <i class="fas fa-spinner fa-pulse" ></i> -->
                   查看更多
                 </router-link>
@@ -41,14 +41,14 @@
           </tr>
         </tbody>
         </table>
-        <pagination-componet :pages="pagination" @change-pages="getProducts"></pagination-componet>
+        <pagination-Component :pages="pagination" @change-pages="getProducts"></pagination-Component>
       </div>
   </div>
 </template>
 
 <script>
 import emitter from '@/libs/emitter'
-import PaginationComponet from '@/components/PaginationComponet.vue'
+import PaginationComponent from '@/components/PaginationComponent.vue'
 export default {
   data () {
     return {
@@ -61,7 +61,7 @@ export default {
     }
   },
   components: {
-    PaginationComponet
+    PaginationComponent
   },
   methods: {
     getProducts (page = 1) {

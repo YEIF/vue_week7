@@ -28,7 +28,7 @@ export default {
           }
         })
         .catch((err) => {
-          console.dir(err.data)
+          console.dir(err)
           alert('驗證失敗，請重新登入')
           this.$router.push('/')
         })

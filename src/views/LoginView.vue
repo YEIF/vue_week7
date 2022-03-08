@@ -8,12 +8,12 @@
           <form id="form" class="form-signin">
             <div class="form-floating mb-3">
               <input v-model="user.username" type="email" class="form-control" id="username"
-                placeholder="name@example.com" required autofocus>
+                placeholder="name@example.com" required autofocus  autocomplete="off">
               <label for="username">Email address</label>
             </div>
             <div class="form-floating">
               <input v-model="user.password" type="password" class="form-control" id="password" placeholder="Password"
-                required>
+                required autocomplete>
               <label for="password">Password</label>
             </div>
             <button class="btn btn-lg btn-primary w-100 mt-3" type="button" @click="login()">

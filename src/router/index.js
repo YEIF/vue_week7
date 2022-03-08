@@ -1,5 +1,4 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-// import HomeView from '../views/HomeView_copy.vue'
 
 const routes = [
   {
@@ -32,7 +31,7 @@ const routes = [
   },
   {
     path: '/admin',
-    component: () => import('../views/DashboradView.vue'),
+    component: () => import('../views/DashboardView.vue'),
     children: [
       {
         path: '',
