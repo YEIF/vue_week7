@@ -1,5 +1,5 @@
 <template>
-    <div
+  <div
     class="modal fade"
     id="productModal"
     tabindex="-1"
@@ -79,7 +79,7 @@
                   <tr>
                     <th>總金額</th>
                     <td>
-                      {{ (localOrder.total) }}
+                      {{ localOrder.total }}
                       <!-- {{ $filters.currency(localOrder.total) }} -->
                     </td>
                   </tr>

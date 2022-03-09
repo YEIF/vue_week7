@@ -1,23 +1,43 @@
 <template>
-  <div id="delCouponModal" ref="modal" class="modal fade" tabindex="-1"
-    aria-labelledby="delCouponModalLabel" aria-hidden="true">
+  <div
+    id="delCouponModal"
+    ref="modal"
+    class="modal fade"
+    tabindex="-1"
+    aria-labelledby="delCouponModalLabel"
+    aria-hidden="true"
+  >
     <div class="modal-dialog">
       <div class="modal-content border-0">
         <div class="modal-header bg-danger text-white">
           <h5 id="delCouponModalLabel" class="modal-title">
             <span>刪除產品</span>
           </h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
         </div>
         <div class="modal-body">
           是否刪除
-          <strong class="text-danger">{{tempCoupon.title}}</strong> 訂單(刪除後將無法恢復)。
+          <strong class="text-danger">{{ tempCoupon.title }}</strong>
+          訂單(刪除後將無法恢復)。
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-outline-secondary" @click="closeModal">
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            @click="closeModal"
+          >
             取消
           </button>
-          <button type="button" class="btn btn-danger" @click="delCoupon(tempCoupon)">
+          <button
+            type="button"
+            class="btn btn-danger"
+            @click="delCoupon(tempCoupon)"
+          >
             確認刪除
           </button>
         </div>
@@ -32,20 +52,21 @@ export default {
   props: ['tempCoupon'],
   mixins: [BootstrapModal],
   data () {
-    return {
-    }
+    return {}
   },
   methods: {
     delCoupon (tempCoupon) {
       console.log(this.tempCoupon)
       const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/coupon/${this.tempCoupon.id}`
-      this.$http.delete(url)
-        .then(res => {
+      this.$http
+        .delete(url)
+        .then((res) => {
           // alert('刪除優惠卷成功')
           this.$emit('get-coupons')
           this.closeModal()
           alert(res.data.message)
-        }).catch(err => {
+        })
+        .catch((err) => {
           console.dir(err)
         })
     },

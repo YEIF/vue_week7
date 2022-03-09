@@ -1,13 +1,17 @@
 <template>
   <DashNavbar></DashNavbar>
+  <ToastMessageComponent></ToastMessageComponent>
   <router-view></router-view>
 </template>
 
 <script>
 import DashNavbar from '@/components/DashNavbar.vue'
+import ToastMessageComponent from '@/components/ToastMessageComponent.vue'
+import emitter from '@/libs/emitter'
 export default {
   components: {
-    DashNavbar
+    DashNavbar,
+    ToastMessageComponent
   },
   data () {
     return {
@@ -17,25 +21,32 @@ export default {
   methods: {
     checkLogin () {
       const url = `${process.env.VUE_APP_API}/api/user/check`
-      this.$http.post(url)
+      this.$http
+        .post(url)
         .then((res) => {
           if (!res.data.success) {
-            alert('請重新登入')
-            this.$router.push('/')
+            emitter.emit('push-message', { style: 'danger', title: '登入失敗' })
+            this.$router.push('/login')
           } else {
-            console.log('登入成功')
+            emitter.emit('push-message', {
+              style: 'success',
+              title: '登入成功'
+            })
             this.status = true
           }
         })
         .catch((err) => {
           console.dir(err)
-          alert('驗證失敗，請重新登入')
-          this.$router.push('/')
+          emitter.emit('push-message', { style: 'danger', title: '登入失敗' })
+          this.$router.push('/login')
         })
     }
   },
   created () {
-    const token = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, '$1')
+    const token = document.cookie.replace(
+      /(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/,
+      '$1'
+    )
     this.$http.defaults.headers.common.Authorization = token
     this.checkLogin()
   }

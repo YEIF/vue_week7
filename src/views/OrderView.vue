@@ -13,8 +13,11 @@
         </tr>
       </thead>
       <tbody>
-        <template v-for="(order, key) in orders" :key="order.id+key">
-          <tr v-if="orders.length" :class="{ 'text-secondary': !order.is_paid }">
+        <template v-for="(order, key) in orders" :key="order.id + key">
+          <tr
+            v-if="orders.length"
+            :class="{ 'text-secondary': !order.is_paid }"
+          >
             <td>{{ DateFn(order.create_at) }}</td>
             <td><span v-text="order.user.email" v-if="order.user"></span></td>
             <td>
@@ -46,14 +49,14 @@
                 <button
                   class="btn btn-outline-primary btn-sm"
                   type="button"
-                  @click="openModal('view',order)"
+                  @click="openModal('view', order)"
                 >
                   檢視
                 </button>
                 <button
                   class="btn btn-outline-danger btn-sm"
                   type="button"
-                  @click="openModal('del',order)"
+                  @click="openModal('del', order)"
                 >
                   刪除
                 </button>
@@ -63,13 +66,23 @@
         </template>
       </tbody>
     </table>
-    <PaginationComponent :pages="pagination" @change-pages="getOrders"></PaginationComponent>
-    <OrderModalComponent ref="orderModal" :temp-order="tempOrder" :current-page="pagination.current_page"
-    @update-paid="updatePaid">
+    <PaginationComponent
+      :pages="pagination"
+      @change-pages="getOrders"
+    ></PaginationComponent>
+    <OrderModalComponent
+      ref="orderModal"
+      :temp-order="tempOrder"
+      :current-page="pagination.current_page"
+      @update-paid="updatePaid"
+    >
     </OrderModalComponent>
-    <DelOrderModalComponent ref="delOrderModal" :temp-order="tempOrder" :current-page="pagination.current_page"
-    @get-orders="getOrders">
-
+    <DelOrderModalComponent
+      ref="delOrderModal"
+      :temp-order="tempOrder"
+      :current-page="pagination.current_page"
+      @get-orders="getOrders"
+    >
     </DelOrderModalComponent>
   </div>
 </template>
@@ -80,7 +93,9 @@ import PaginationComponent from '@/components/PaginationComponent.vue'
 import OrderModalComponent from '@/components/OrderModalComponent.vue'
 export default {
   components: {
-    PaginationComponent, OrderModalComponent, DelOrderModalComponent
+    PaginationComponent,
+    OrderModalComponent,
+    DelOrderModalComponent
   },
   data () {
     return {
@@ -94,12 +109,14 @@ export default {
     getOrders (page = 1) {
       const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/orders?page=${page}`
       this.isLoading = true
-      this.$http.get(url, this.tempProduct)
+      this.$http
+        .get(url, this.tempProduct)
         .then((res) => {
           this.orders = res.data.orders
           this.pagination = res.data.pagination
           this.isLoading = false
-        }).catch((err) => {
+        })
+        .catch((err) => {
           console.dir(err)
         })
     },
@@ -114,23 +131,26 @@ export default {
       }
     },
     updatePaid (order) {
-      // this.isLoading = true;
+      this.isLoading = true
       const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/order/${order.id}`
       const paid = {
         is_paid: order.is_paid
       }
-      this.$http.put(api, { data: paid }).then((res) => {
-        // this.isLoading = false
-        const orderComponent = this.$refs.orderModal
-        orderComponent.hideModal()
-        this.getOrders(this.currentPage)
-        alert('更新付款狀態')
-        // this.$httpMessageState(ress, '更新付款狀態')
-      }).catch((err) => {
-        console.dir(err)
-        // this.isLoading = false
-        // this.$httpMessageState(error.ress, '錯誤訊息')
-      })
+      this.$http
+        .put(api, { data: paid })
+        .then((res) => {
+          this.isLoading = false
+          const orderComponent = this.$refs.orderModal
+          orderComponent.hideModal()
+          this.getOrders(this.currentPage)
+          alert('更新付款狀態')
+          // this.$httpMessageState(ress, '更新付款狀態')
+        })
+        .catch((err) => {
+          console.dir(err)
+          this.isLoading = false
+          // this.$httpMessageState(error.ress, '錯誤訊息')
+        })
     }
   },
   mounted () {

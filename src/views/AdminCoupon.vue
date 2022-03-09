@@ -2,46 +2,63 @@
   <div class="container">
     <VLoading :active="isLoading" :z-index="1060"></VLoading>
     <div class="text-end mt-4">
-      <button class="btn btn-primary" type="button" @click="openCouponModal('new')">
+      <button
+        class="btn btn-primary"
+        type="button"
+        @click="openCouponModal('new')"
+      >
         建立新的優惠券
       </button>
     </div>
     <table class="table mt-4">
       <thead>
-      <tr>
-        <th>名稱</th>
-        <th>折扣百分比</th>
-        <th>到期日</th>
-        <th>是否啟用</th>
-        <th>編輯</th>
-      </tr>
+        <tr>
+          <th>名稱</th>
+          <th>折扣百分比</th>
+          <th>到期日</th>
+          <th>是否啟用</th>
+          <th>編輯</th>
+        </tr>
       </thead>
       <tbody>
-      <tr v-for="(item, key) in coupons" :key="key">
-        <td>{{ item.title }}</td>
-        <td>{{ item.percent }}%</td>
-        <td>{{ DateFn(item.due_date) }}</td>
-        <td>
-          <span v-if="item.is_enabled === 1" class="text-success">啟用</span>
-          <span v-else class="text-muted">未啟用</span>
-        </td>
-        <td>
-          <div class="btn-group">
-            <button class="btn btn-outline-primary btn-sm"
-                    @click="openCouponModal('edit', item)"
-            >編輯</button>
-            <button class="btn btn-outline-danger btn-sm"
-                    @click="openCouponModal('del',item)"
-            >刪除</button>
-          </div>
-        </td>
-      </tr>
+        <tr v-for="(item, key) in coupons" :key="key">
+          <td>{{ item.title }}</td>
+          <td>{{ item.percent }}%</td>
+          <td>{{ DateFn(item.due_date) }}</td>
+          <td>
+            <span v-if="item.is_enabled === 1" class="text-success">啟用</span>
+            <span v-else class="text-muted">未啟用</span>
+          </td>
+          <td>
+            <div class="btn-group">
+              <button
+                class="btn btn-outline-primary btn-sm"
+                @click="openCouponModal('edit', item)"
+              >
+                編輯
+              </button>
+              <button
+                class="btn btn-outline-danger btn-sm"
+                @click="openCouponModal('del', item)"
+              >
+                刪除
+              </button>
+            </div>
+          </td>
+        </tr>
       </tbody>
     </table>
-    <CouponModalComponent ref="couponModal" :temp-coupon="tempCoupon" :is-new="isNew"
-    @get-coupons="getCoupons"></CouponModalComponent>
-    <DelCouponModalComponent ref="delCouponModal" :temp-coupon="tempCoupon"
-     @get-coupons="getCoupons"></DelCouponModalComponent>
+    <CouponModalComponent
+      ref="couponModal"
+      :temp-coupon="tempCoupon"
+      :is-new="isNew"
+      @get-coupons="getCoupons"
+    ></CouponModalComponent>
+    <DelCouponModalComponent
+      ref="delCouponModal"
+      :temp-coupon="tempCoupon"
+      @get-coupons="getCoupons"
+    ></DelCouponModalComponent>
   </div>
 </template>
 <script>
@@ -50,7 +67,8 @@ import CouponModalComponent from '@/components/CouponModalComponent.vue'
 import DelCouponModalComponent from '@/components/DelCouponModalComponent.vue'
 export default {
   components: {
-    CouponModalComponent, DelCouponModalComponent
+    CouponModalComponent,
+    DelCouponModalComponent
   },
   data () {
     return {
@@ -69,12 +87,14 @@ export default {
     getCoupons () {
       this.isLoading = true
       const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/coupons`
-      this.$http.get(url, this.tempProduct)
-        .then(res => {
+      this.$http
+        .get(url, this.tempProduct)
+        .then((res) => {
           this.coupons = res.data.coupons
           this.isLoading = false
           console.log(res)
-        }).catch((err) => {
+        })
+        .catch((err) => {
           console.dir(err)
           this.isLoading = false
           // this.$httpMessageState(error.response, '錯誤訊息')

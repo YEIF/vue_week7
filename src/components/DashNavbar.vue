@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
       <!-- <a class="navbar-brand" href="#">後台</a> -->
       <router-link class="navbar-brand" to="/admin">後台</router-link>
@@ -43,13 +43,15 @@ export default {
   methods: {
     logout () {
       const api = `${process.env.VUE_APP_API}/logout`
-      this.$http.post(api)
+      this.$http
+        .post(api)
         .then((response) => {
           alert('登出成功')
           if (response.data.success) {
             this.$router.push('/')
           }
-        }).catch((error) => {
+        })
+        .catch((error) => {
           alert(error.response)
           // this.$httpMessageState(error.response, '錯誤訊息')
         })
