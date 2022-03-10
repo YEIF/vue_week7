@@ -1,4 +1,5 @@
 <template>
+  <VLoading :active="isLoading" :z-index="1060"></VLoading>
   <div
     id="delOrderModal"
     ref="modal"
@@ -44,25 +45,32 @@
 
 <script>
 import BootstrapModal from '@/libs/mixins/BootstrapModal'
+import emitter from '@/libs/emitter'
 export default {
   props: ['tempOrder', 'currentPage'],
+  emits: ['get-orders'],
   mixins: [BootstrapModal],
   data () {
-    return {}
+    return {
+      isLoading: false
+    }
   },
   methods: {
     delOrder () {
       console.log(this.tempOrder)
+      this.isLoading = true
       const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/order/${this.tempOrder.id}`
       this.$http
         .delete(url)
         .then((res) => {
+          this.isLoading = false
+          emitter.emit('push-message', { style: 'success', title: this.tempOrder.id + '訂單' + res.data.message })
           this.$emit('get-orders', this.currentPage)
           this.closeModal()
-          alert(res.data.message)
         })
         .catch((err) => {
           console.dir(err)
+          this.isLoading = false
         })
     },
     closeModal () {

@@ -1,4 +1,5 @@
 <template>
+  <ToastMessageComponent></ToastMessageComponent>
   <router-view />
 </template>
 
@@ -24,3 +25,11 @@
   }
 }
 </style>
+<script>
+import ToastMessageComponent from '@/components/ToastMessageComponent.vue'
+export default {
+  components: {
+    ToastMessageComponent
+  }
+}
+</script>

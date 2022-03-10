@@ -9,7 +9,6 @@
       class="toast show"
       :class="`toast${key}`"
       role="alert"
-      :ref="`toast${key}`"
     >
       <div class="toast-header">
         <span

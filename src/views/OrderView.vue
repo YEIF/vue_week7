@@ -91,6 +91,7 @@ import { DateFn } from '@/libs/date'
 import DelOrderModalComponent from '@/components/DelOrderModalComponent.vue'
 import PaginationComponent from '@/components/PaginationComponent.vue'
 import OrderModalComponent from '@/components/OrderModalComponent.vue'
+import emitter from '@/libs/emitter'
 export default {
   components: {
     PaginationComponent,
@@ -115,6 +116,7 @@ export default {
           this.orders = res.data.orders
           this.pagination = res.data.pagination
           this.isLoading = false
+          // console.log(res)
         })
         .catch((err) => {
           console.dir(err)
@@ -143,13 +145,13 @@ export default {
           const orderComponent = this.$refs.orderModal
           orderComponent.hideModal()
           this.getOrders(this.currentPage)
-          alert('更新付款狀態')
-          // this.$httpMessageState(ress, '更新付款狀態')
+          console.log(res)
+          emitter.emit('push-message', { style: 'success', title: '更新付款狀態' })
         })
         .catch((err) => {
           console.dir(err)
           this.isLoading = false
-          // this.$httpMessageState(error.ress, '錯誤訊息')
+          emitter.emit('push-message', { style: 'danger', title: '付款狀態更新失敗', content: String(err.response.data.message) })
         })
     }
   },

@@ -1,17 +1,14 @@
 <template>
   <DashNavbar></DashNavbar>
-  <ToastMessageComponent></ToastMessageComponent>
   <router-view></router-view>
 </template>
 
 <script>
 import DashNavbar from '@/components/DashNavbar.vue'
-import ToastMessageComponent from '@/components/ToastMessageComponent.vue'
 import emitter from '@/libs/emitter'
 export default {
   components: {
-    DashNavbar,
-    ToastMessageComponent
+    DashNavbar
   },
   data () {
     return {

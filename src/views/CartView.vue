@@ -27,7 +27,7 @@
             <button
               type="button"
               class="btn btn-outline-danger btn-sm"
-              @click="delCart(cart.id)"
+              @click="delCart(cart.id,cart.product.title)"
             >
               <i
                 class="fas fa-spinner fa-pulse"
@@ -182,6 +182,18 @@ export default {
       isLoading: false
     }
   },
+  watch: {
+    'carts.carts': {
+      handler (n, o) {
+        console.log(n)
+        // console.log(n[0].qty)
+      },
+      deep: true
+    }
+    // 'carts.carts.qty' (n, o) {
+    //   console.log(n, o)
+    // }
+  },
   methods: {
     getCarts () {
       const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart/`
@@ -197,7 +209,7 @@ export default {
           this.isLoading = false
         })
     },
-    delCart (id) {
+    delCart (id, title) {
       this.isLoadingItem = id
       const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart/${id}`
       this.$http
@@ -205,6 +217,8 @@ export default {
         .then((res) => {
           this.isLoadingItem = ''
           this.getCarts()
+          console.log(res)
+          emitter.emit('push-message', { style: 'success', title: `${title}${res.data.message}` })
           emitter.emit('get-cart-num')
         })
         .catch((err) => {
@@ -218,6 +232,7 @@ export default {
         .delete(url)
         .then((res) => {
           this.getCarts()
+          emitter.emit('push-message', { style: 'success', title: '已清空購物車' })
           emitter.emit('get-cart-num')
         })
         .catch((err) => {
@@ -235,6 +250,7 @@ export default {
         .put(url, { data })
         .then((res) => {
           this.isLoadingItem = ''
+          emitter.emit('push-message', { style: 'success', title: `${res.data.message}` })
           this.getCarts()
         })
         .catch((err) => {
@@ -247,15 +263,15 @@ export default {
       const order = this.form
       this.$http
         .post(url, { data: order })
-        .then((response) => {
-          alert(response.data.message)
+        .then((res) => {
+          emitter.emit('push-message', { style: 'success', title: `${res.data.message}` })
           this.$refs.form.resetForm()
           this.form.user.message = ''
           this.getCarts()
         })
         .catch((err) => {
           console.dir(err)
-          alert(err.response.data.message)
+          emitter.emit('push-message', { style: 'success', title: `${err.response.data.message}` })
         })
     }
   },

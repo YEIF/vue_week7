@@ -267,20 +267,20 @@ export default {
     updateProduct () {
       let url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/product/`
       let method = 'post'
-      let message = '新增產品'
+      let typeMessage = '新增產品'
       if (!this.isNew) {
         url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/product/${this.tempProduct.id}`
         method = 'put'
-        message = '更新產品'
+        typeMessage = '更新產品'
       }
       this.isLoading = true
-      this.$http[method](url, { data: this.tempProduct })
+      this.$http[method](url, { data: this.localProduct })
         .then((res) => {
           // this.getProducts()
           this.isLoading = false
           emitter.emit('push-message', {
             style: 'success',
-            title: `${message}成功`
+            title: `${typeMessage}成功`
           })
           this.$emit('get-products', method === 'put' ? this.currentPage : 1)
           this.closeModal()
@@ -289,7 +289,7 @@ export default {
           this.isLoading = false
           emitter.emit('push-message', {
             style: 'danger',
-            title: `${message}失敗`,
+            title: `${typeMessage}失敗`,
             content: `${err.response.data.message}`
           })
           console.dir(err)

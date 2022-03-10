@@ -50,7 +50,7 @@
                 <button
                   type="button"
                   class="btn btn-outline-danger"
-                  @click="addToCart(product.id)"
+                  @click="addToCart(product.id,product.title)"
                   :disabled="isLoadingItem === product.id"
                 >
                   <i
@@ -93,7 +93,6 @@ export default {
   },
   methods: {
     getProducts (page = 1) {
-      // console.log(this.$http)
       this.isLoading = true
       this.$http
         .get(
@@ -109,7 +108,7 @@ export default {
           this.isLoading = false
         })
     },
-    addToCart (id, qty = 1) {
+    addToCart (id, title, qty = 1) {
       const data = {
         product_id: id,
         qty: qty
@@ -120,11 +119,14 @@ export default {
         .post(url, { data })
         .then((res) => {
           this.isLoadingItem = ''
+          emitter.emit('push-message', { style: 'success', title: `${title}${res.data.message}` })
           // get cart
           emitter.emit('get-cart-num')
         })
         .catch((err) => {
           console.dir(err)
+          this.isLoadingItem = ''
+          emitter.emit('push-message', { style: 'danger', title: `${err.response.data.message}` })
         })
     }
   },

@@ -52,7 +52,7 @@
                 <button
                   type="button"
                   class="btn btn-primary"
-                  @click="addToCart(product.id, qty)"
+                  @click="addToCart(product.id,product.title, qty)"
                 >
                   加入購物車
                 </button>
@@ -92,23 +92,24 @@ export default {
           this.isLoading = false
         })
     },
-    addToCart (id, qty = 1) {
+    addToCart (id, title, qty = 1) {
       const data = {
         product_id: id,
         qty: qty
       }
-      this.isLoadingItem = true
+      this.isLoading = true
       const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart/`
       this.$http
         .post(url, { data })
         .then((res) => {
-          alert('成功加入購物車')
           this.qty = 1
           emitter.emit('get-cart-num')
+          emitter.emit('push-message', { style: 'success', title: `${title}${res.data.message}` })
           this.isLoading = false
         })
         .catch((err) => {
-          console.dir(err)
+          this.isLoading = false
+          emitter.emit('push-message', { style: 'danger', title: `${err.response.data.message}` })
         })
     }
   },

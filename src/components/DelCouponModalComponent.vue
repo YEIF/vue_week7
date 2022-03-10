@@ -1,4 +1,5 @@
 <template>
+  <VLoading :active="isLoading" :z-index="1060"></VLoading>
   <div
     id="delCouponModal"
     ref="modal"
@@ -23,7 +24,7 @@
         <div class="modal-body">
           是否刪除
           <strong class="text-danger">{{ tempCoupon.title }}</strong>
-          訂單(刪除後將無法恢復)。
+          優惠卷(刪除後將無法恢復)。
         </div>
         <div class="modal-footer">
           <button
@@ -36,7 +37,7 @@
           <button
             type="button"
             class="btn btn-danger"
-            @click="delCoupon(tempCoupon)"
+            @click="delCoupon()"
           >
             確認刪除
           </button>
@@ -48,25 +49,28 @@
 
 <script>
 import BootstrapModal from '@/libs/mixins/BootstrapModal'
+import emitter from '@/libs/emitter'
 export default {
   props: ['tempCoupon'],
+  emits: ['get-coupons'],
   mixins: [BootstrapModal],
   data () {
-    return {}
+    return { isLoading: false }
   },
   methods: {
-    delCoupon (tempCoupon) {
-      console.log(this.tempCoupon)
+    delCoupon () {
+      this.isLoading = true
       const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/coupon/${this.tempCoupon.id}`
       this.$http
         .delete(url)
         .then((res) => {
-          // alert('刪除優惠卷成功')
+          this.isLoading = false
           this.$emit('get-coupons')
           this.closeModal()
-          alert(res.data.message)
+          emitter.emit('push-message', { style: 'success', title: `已刪除${this.tempCoupon.title}優惠卷` })
         })
         .catch((err) => {
+          this.isLoading = false
           console.dir(err)
         })
     },

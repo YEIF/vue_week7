@@ -1,4 +1,5 @@
 <template>
+  <VLoading :active="isLoading" :z-index="1060"></VLoading>
   <div
     class="modal fade"
     id="couponModal"
@@ -99,13 +100,16 @@
 
 <script>
 import BootstrapModal from '@/libs/mixins/BootstrapModal'
+import emitter from '@/libs/emitter'
 export default {
   mixins: [BootstrapModal],
   props: ['tempCoupon', 'isNew'],
+  emits: ['get-coupons'],
   data () {
     return {
       localCoupon: {},
-      due_date: ''
+      due_date: '',
+      isLoading: false
     }
   },
   watch: {
@@ -121,26 +125,30 @@ export default {
     }
   },
   methods: {
-    updateCoupon (localCoupon) {
-      // this.isLoading = true
+    updateCoupon () {
+      this.isLoading = true
       let url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/coupon`
       let methods = 'post'
-      let data = localCoupon
-
+      let typeMessage = '新增'
       if (!this.isNew) {
         url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/coupon/${this.localCoupon.id}`
         methods = 'put'
-        data = this.localCoupon
+        typeMessage = '更新'
       }
 
-      this.$http[methods](url, { data })
-        .then((response) => {
-          alert('更改優惠卷')
+      this.$http[methods](url, { data: this.localCoupon })
+        .then((res) => {
+          // alert('更改優惠卷')
+          this.isLoading = false
+          console.log(res)
+          emitter.emit('push-message', { style: 'success', title: `${typeMessage}${this.localCoupon.title}優惠卷` })
           this.$emit('get-coupons')
           this.closeModal()
         })
-        .catch((error) => {
-          console.dir(error)
+        .catch((err) => {
+          console.dir(err)
+          this.isLoading = false
+          emitter.emit('push-message', { style: 'danger', title: `${typeMessage}${this.localCoupon.title}優惠卷`, content: `${err.response.data.message}` })
           // this.$httpMessageState(error.response, '錯誤訊息')
         })
     },

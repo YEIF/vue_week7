@@ -92,12 +92,10 @@ export default {
         .then((res) => {
           this.coupons = res.data.coupons
           this.isLoading = false
-          console.log(res)
         })
         .catch((err) => {
           console.dir(err)
           this.isLoading = false
-          // this.$httpMessageState(error.response, '錯誤訊息')
         })
     },
     DateFn,
@@ -106,7 +104,8 @@ export default {
         this.isNew = true
         // this.tempCoupon = {}
         this.tempCoupon = {
-          due_date: new Date().getTime() / 1000
+          due_date: new Date().getTime() / 1000,
+          is_enabled: 0
         }
         this.$refs.couponModal.openModal()
       } else if (type === 'edit') {
