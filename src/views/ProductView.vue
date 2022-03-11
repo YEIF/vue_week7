@@ -76,6 +76,13 @@ export default {
       isLoading: false
     }
   },
+  watch: {
+    qty (n, o) {
+      if (n <= 0) {
+        this.qty = o
+      }
+    }
+  },
   methods: {
     getProduct () {
       const { id } = this.$route.params

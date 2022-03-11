@@ -50,8 +50,8 @@
                   min="1"
                   type="number"
                   class="form-control"
-                  @blur="updateCart(cart)"
                 />
+                  <!-- @blur="updateCart(cart)" -->
                 <span class="input-group-text" id="basic-addon2">{{
                   cart.product.unit
                 }}</span>
@@ -185,14 +185,18 @@ export default {
   watch: {
     'carts.carts': {
       handler (n, o) {
-        console.log(n)
-        // console.log(n[0].qty)
+        Object.keys(n).forEach(index => {
+          if (n[index].qty <= 0) {
+            n[index].qty = '0'
+          }
+        })
+        console.log(n, o)
       },
       deep: true
+    },
+    'carts.carts.qty' (n, o) {
+      console.log(n, o)
     }
-    // 'carts.carts.qty' (n, o) {
-    //   console.log(n, o)
-    // }
   },
   methods: {
     getCarts () {
