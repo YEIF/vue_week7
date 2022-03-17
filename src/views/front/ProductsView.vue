@@ -1,6 +1,8 @@
 <template>
   <!-- <h2>產品列表</h2> -->
-  <VLoading :active="isLoading" :z-index="1060"></VLoading>
+  <VLoading :active="isLoading" :z-index="1060">
+    <LoadingComponent></LoadingComponent>
+  </VLoading>
   <div class="container">
     <div class="mt-4">
       <table class="table align-middle">
@@ -50,7 +52,7 @@
                 <button
                   type="button"
                   class="btn btn-outline-danger"
-                  @click="addToCart(product.id,product.title)"
+                  @click="addToCart(product.id, product.title)"
                   :disabled="isLoadingItem === product.id"
                 >
                   <i
@@ -75,6 +77,7 @@
 <script>
 import emitter from '@/libs/emitter'
 import PaginationComponent from '@/components/PaginationComponent.vue'
+import LoadingComponent from '@/components/LoadingComponent.vue'
 export default {
   data () {
     return {
@@ -89,7 +92,8 @@ export default {
     }
   },
   components: {
-    PaginationComponent
+    PaginationComponent,
+    LoadingComponent
   },
   methods: {
     getProducts (page = 1) {
@@ -119,14 +123,20 @@ export default {
         .post(url, { data })
         .then((res) => {
           this.isLoadingItem = ''
-          emitter.emit('push-message', { style: 'success', title: `${title}${res.data.message}` })
+          emitter.emit('push-message', {
+            style: 'success',
+            title: `${title}${res.data.message}`
+          })
           // get cart
           emitter.emit('get-cart-num')
         })
         .catch((err) => {
           console.dir(err)
           this.isLoadingItem = ''
-          emitter.emit('push-message', { style: 'danger', title: `${err.response.data.message}` })
+          emitter.emit('push-message', {
+            style: 'danger',
+            title: `${err.response.data.message}`
+          })
         })
     }
   },

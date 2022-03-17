@@ -1,6 +1,8 @@
 <template>
   <!-- <h2>購物車</h2> -->
-  <VLoading :active="isLoading" :z-index="1060"></VLoading>
+  <VLoading :active="isLoading" :z-index="1060">
+    <LoadingComponent></LoadingComponent>
+  </VLoading>
   <div class="text-end">
     <button
       class="btn btn-outline-danger"
@@ -27,7 +29,7 @@
             <button
               type="button"
               class="btn btn-outline-danger btn-sm"
-              @click="delCart(cart.id,cart.product.title)"
+              @click="delCart(cart.id, cart.product.title)"
             >
               <i
                 class="fas fa-spinner fa-pulse"
@@ -50,8 +52,8 @@
                   min="1"
                   type="number"
                   class="form-control"
+                  @blur="updateCart(cart)"
                 />
-                  <!-- @blur="updateCart(cart)" -->
                 <span class="input-group-text" id="basic-addon2">{{
                   cart.product.unit
                 }}</span>
@@ -165,7 +167,11 @@
 </template>
 <script>
 import emitter from '@/libs/emitter'
+import LoadingComponent from '@/components/LoadingComponent.vue'
 export default {
+  components: {
+    LoadingComponent
+  },
   data () {
     return {
       carts: {},
@@ -185,7 +191,7 @@ export default {
   watch: {
     'carts.carts': {
       handler (n, o) {
-        Object.keys(n).forEach(index => {
+        Object.keys(n).forEach((index) => {
           if (n[index].qty <= 0) {
             n[index].qty = '0'
           }
@@ -222,7 +228,10 @@ export default {
           this.isLoadingItem = ''
           this.getCarts()
           console.log(res)
-          emitter.emit('push-message', { style: 'success', title: `${title}${res.data.message}` })
+          emitter.emit('push-message', {
+            style: 'success',
+            title: `${title}${res.data.message}`
+          })
           emitter.emit('get-cart-num')
         })
         .catch((err) => {
@@ -236,7 +245,10 @@ export default {
         .delete(url)
         .then((res) => {
           this.getCarts()
-          emitter.emit('push-message', { style: 'success', title: '已清空購物車' })
+          emitter.emit('push-message', {
+            style: 'success',
+            title: '已清空購物車'
+          })
           emitter.emit('get-cart-num')
         })
         .catch((err) => {
@@ -254,7 +266,10 @@ export default {
         .put(url, { data })
         .then((res) => {
           this.isLoadingItem = ''
-          emitter.emit('push-message', { style: 'success', title: `${res.data.message}` })
+          emitter.emit('push-message', {
+            style: 'success',
+            title: `${res.data.message}`
+          })
           this.getCarts()
         })
         .catch((err) => {
@@ -268,14 +283,20 @@ export default {
       this.$http
         .post(url, { data: order })
         .then((res) => {
-          emitter.emit('push-message', { style: 'success', title: `${res.data.message}` })
+          emitter.emit('push-message', {
+            style: 'success',
+            title: `${res.data.message}`
+          })
           this.$refs.form.resetForm()
           this.form.user.message = ''
           this.getCarts()
         })
         .catch((err) => {
           console.dir(err)
-          emitter.emit('push-message', { style: 'success', title: `${err.response.data.message}` })
+          emitter.emit('push-message', {
+            style: 'success',
+            title: `${err.response.data.message}`
+          })
         })
     }
   },

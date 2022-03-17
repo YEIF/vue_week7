@@ -1,6 +1,8 @@
 <template>
   <!-- <h2>單一產品</h2> -->
-  <VLoading :active="isLoading" :z-index="1060"></VLoading>
+  <VLoading :active="isLoading" :z-index="1060">
+
+  </VLoading>
 
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb mt-3">
@@ -52,7 +54,7 @@
                 <button
                   type="button"
                   class="btn btn-primary"
-                  @click="addToCart(product.id,product.title, qty)"
+                  @click="addToCart(product.id, product.title, qty)"
                 >
                   加入購物車
                 </button>
@@ -111,12 +113,18 @@ export default {
         .then((res) => {
           this.qty = 1
           emitter.emit('get-cart-num')
-          emitter.emit('push-message', { style: 'success', title: `${title}${res.data.message}` })
+          emitter.emit('push-message', {
+            style: 'success',
+            title: `${title}${res.data.message}`
+          })
           this.isLoading = false
         })
         .catch((err) => {
           this.isLoading = false
-          emitter.emit('push-message', { style: 'danger', title: `${err.response.data.message}` })
+          emitter.emit('push-message', {
+            style: 'danger',
+            title: `${err.response.data.message}`
+          })
         })
     }
   },

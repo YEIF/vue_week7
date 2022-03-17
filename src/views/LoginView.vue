@@ -52,6 +52,8 @@
 }
 </style>
 <script>
+import emitter from '@/libs/emitter'
+
 export default {
   data () {
     return {
@@ -78,8 +80,8 @@ export default {
           this.isLoading = false
           this.$router.push('/admin/products')
         })
-        .catch((error) => {
-          alert(error.data.message)
+        .catch((err) => {
+          emitter.emit('push-message', { style: 'danger', title: `${err.response.data.message}` })
           this.isLoading = false
         })
     }

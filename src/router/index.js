@@ -8,19 +8,19 @@ const routes = [
       {
         path: '',
         // component: HomeView
-        component: () => import('../views/HomeView.vue')
+        component: () => import('../views/front/HomeView')
       },
       {
         path: 'products',
-        component: () => import('../views/ProductsView.vue')
+        component: () => import('../views/front/ProductsView.vue')
       },
       {
         path: 'product/:id',
-        component: () => import('../views/ProductView.vue')
+        component: () => import('../views/front/ProductView.vue')
       },
       {
         path: 'cart',
-        component: () => import('../views/CartView.vue')
+        component: () => import('../views/front/CartView.vue')
       }
     ]
   },
@@ -31,18 +31,18 @@ const routes = [
       {
         path: '',
         // component: HomeView
-        component: () => import('../views/AdminView.vue')
+        component: () => import('../views/admin/AdminView.vue')
       },
       {
         path: 'products',
-        component: () => import('../views/AdminProducts.vue')
+        component: () => import('../views/admin/AdminProducts.vue')
       },
       {
         path: 'coupon',
-        component: () => import('../views/AdminCoupon.vue')
+        component: () => import('../views/admin/AdminCoupon.vue')
       }, {
         path: 'orders',
-        component: () => import('../views/OrderView.vue')
+        component: () => import('../views/admin/OrderView.vue')
       }
     ]
   }, {
